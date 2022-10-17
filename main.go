@@ -48,6 +48,11 @@ func main() {
 	http.Handle("/", &handler{
 		Logger: logger,
 	})
+	ready := func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("READY"))
+	}
+	http.HandleFunc("/ready", ready)
+	http.HandleFunc("/live", ready)
 	if err := http.ListenAndServe(*address, nil); err != nil {
 		errorLog.Fatalf("failed to start http server: %v", err)
 	}
